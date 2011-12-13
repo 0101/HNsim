@@ -4,7 +4,7 @@ fs = require 'fs'
 jsdom = require 'jsdom'
 
 {updateOrCreateEntry, db} = require './models'
-{makeErrorHandler} = require './utils'
+{makeErrorHandler, logErr} = require './utils'
 
 
 jquerySrc = fs.readFileSync('./jquery-1.6.4.min.js').toString()
@@ -12,8 +12,6 @@ jquerySrc = fs.readFileSync('./jquery-1.6.4.min.js').toString()
 
 print = (args...) -> console.log args...
 
-
-logErr = makeErrorHandler log
 
 
 parseNumber = (text) ->
@@ -150,4 +148,6 @@ parseCommentPage = (id, callback) ->
 #parseCommentPage 3125171, logErr (data) ->
 #  updateOrCreateEntry data, logErr()
 
-scrapeHNDaily()
+#scrapeHNDaily()
+
+module.exports = {parseCommentPage}

@@ -1,0 +1,77 @@
+extends base
+
+block content
+  .top
+    .bookmarklet
+      .star ★
+      a(href="javascript:(function() { var address = window.location; if (!/news\\.ycombinator\\.com\\/item\\?id=\\d+/.test(address)) { alert('only works on HN comments pages!');} else { window.location = ('http://hnsim.innit.cz/?i=' + escape(address));}  })()") HNsim bookmarklet
+      .info (drag this to your bookmarks bar)
+    h1
+      a(href='/').main
+        span.hn HN
+        span.sim sim
+      span.phrase Find similar entries on
+        a(href='http://news.ycombinator.com/news') HN
+
+    .input-pane
+      form(method='get', action='?')
+        input(name='i', type='text', placeholder='Enter HN comments URL')
+
+  .main
+    - if (error)
+      .error
+        p= error
+
+    - if (!results)
+      .examples
+         h2 Examples
+         a(href='/?i=http%3A%2F%2Fnews.ycombinator.com%2Fitem%3Fid%3D2155035') Why I Left Google
+         a(href='/?i=http%3A%2F%2Fnews.ycombinator.com%2Fitem%3Fid%3D2153046') Why Dropbox Succeeded and Syncplicity Didn’t
+         a(href='/?i=http%3A%2F%2Fnews.ycombinator.com%2Fitem%3Fid%3D2388832') Node.js Guide
+         a(href='/?i=http%3A//news.ycombinator.com/item%3Fid%3D3345161') Blanking all Wikipedia — SOPA protest
+
+    .results-pane
+    - if (results)
+
+      div
+        .entry
+          h2: a(href='#{results.entry.url}')= results.entry.title
+          a.commentsUrl(href='#{results.commentsUrl}') comments
+
+          h4 relevant words:
+          ol.relevant
+            for w in results.relevant
+              li
+                span.word= w.word
+                span.score= w.score
+
+        h4 similar entries:
+
+        .results
+          ol
+            for item in results.results
+              li.entry
+                h3: a(href="#{item.url}")= item.title
+                a.commentsUrl(href='#{item.commentsUrl}') comments
+                .rating
+                  span.label similarity:
+                  span.value= item.rating
+
+
+                h5 common words:
+                ol.common
+                  for w in item.common
+                    li
+                      span.word= w.word
+                      span.score= w.score
+
+  .bottom
+
+
+
+
+block scripts
+  :coffeescript
+    require '/index'
+
+

@@ -1,18 +1,8 @@
 _ = require 'underscore'
 express = require 'express'
-browserify = require 'browserify'
-{browserijade} = require 'browserijade'
 
 settings = require './settings'
 findSimilar = require './find-similar'
-
-
-browserifyFor = (env) ->
-  bundle = browserify
-    require: ['./client/index']
-    filter: if env is 'production' then require 'uglify-js' else null
-  bundle.use browserijade "#{__dirname}/templates/includes"
-  return bundle
 
 
 app = express.createServer()
@@ -30,16 +20,10 @@ app.configure ->
 app.configure 'production', ->
   app.use express.logger format: ':date :req[X-Real-IP] :method :url :status :response-time ms'
   app.use express.errorHandler stack: false
-  app.use browserifyFor 'production'
 
 app.configure 'development', ->
   app.use express.logger format: 'dev'
   app.use express.errorHandler stack: true
-  app.use browserifyFor 'development'
-
-
-#render = (template, context={}) ->
-#  (request, response) -> response.render template, context
 
 
 app.get '/', (request, response) ->

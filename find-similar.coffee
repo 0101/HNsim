@@ -20,7 +20,6 @@ ScoresList = (entry, words) ->
 
 
 similarity = (s1, s2, common) ->
-  #console.log "s1:", s1, "s2:", s2, "common:",common
   common.length * common.reduce ((result, word) -> result + s1[word] * s2[word]), 0
 
 
@@ -28,7 +27,6 @@ commonWords = (r1, r2) -> r1.filter (w) -> w in r2
 
 
 processResult = (words, relevantScores, entry) ->
-  #console.log "processResult, words:", words, "relevantScores:", relevantScores
   entryScores = getRelevantScores entry
 
   common = commonWords words, entry.relevant
@@ -67,8 +65,6 @@ findSimilar = (entry, callback) ->
       relevant: ScoresList(entry)
       commentsUrl: "http://news.ycombinator.com/item?id=#{entry.id}"
       results: results[...10], null, 2
-
-
 
 
 

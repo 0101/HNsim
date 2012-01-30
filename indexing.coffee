@@ -40,7 +40,6 @@ populateScores = (entry, save=false, cb=->) ->
   total = words.length
   entry.scores = {}
   groups = _.groupBy words, (w) ->
-    #console.log "WORD:#{w}"
     # *sigh*
     if w is 'constructor' then '<constructor>' else w
 
